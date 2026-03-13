@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -330,7 +331,9 @@ function cardHTML(loc) {
 
   const [icon,desc] = WMO[w.weathercode]||["🌡","Unknown"];
   const alert = getAlert(w.weathercode, w.windspeed_10m, w.temperature_2m);
-  const temp  = Math.round(w.temperature_2m);
+  const tempC = Math.round(w.temperature_2m);
+  const tempF = Math.round(w.temperature_2m * 9/5 + 32);
+  const temp  = tempC;
   const wind  = Math.round(w.windspeed_10m);
 
   return `<div class="card${alert?' alert-'+alert.level:''}">
@@ -340,7 +343,7 @@ function cardHTML(loc) {
     </div>
     <div class="weather-main">
       <div class="w-icon">${icon}</div>
-      <div><div class="w-temp">${temp}<sup>°C</sup></div><div class="w-desc">${desc}</div></div>
+      <div><div class="w-temp">${tempC}<sup>°C</sup> <span style="font-size:1rem;font-weight:500;color:var(--w40);">/ ${tempF}°F</span></div><div class="w-desc">${desc}</div></div>
     </div>
     <div class="weather-meta">
       <div class="meta-pill">💨 <strong>${wind} km/h</strong></div>
