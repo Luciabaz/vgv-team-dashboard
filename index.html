@@ -129,7 +129,14 @@
   .tl-badge.today { background:rgba(42,72,222,0.3); color:#89aaff; border:1px solid var(--blue20); }
   .tl-badge.soon  { background:rgba(255,204,0,0.12); color:var(--warn); border:1px solid rgba(255,204,0,0.3); }
 
-  .hol-filters { display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .tl-toggle { margin-top:6px; }
+  .tl-toggle-btn { background:none; border:none; color:var(--w40); font-family:'Poppins',sans-serif; font-size:0.52rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; padding:0; display:flex; align-items:center; gap:5px; transition:color 0.15s; }
+  .tl-toggle-btn:hover { color:#89aaff; }
+  .tl-toggle-btn .tl-arrow { display:inline-block; transition:transform 0.2s; font-style:normal; }
+  .tl-toggle-btn.open .tl-arrow { transform:rotate(90deg); }
+  .tl-toggle-body { display:none; margin-top:8px; border-radius:8px; overflow:hidden; background:rgba(255,255,255,0.03); border:1px solid var(--w06); }
+  .tl-toggle-body.open { display:block; }
+  .tl-toggle-desc { padding:0.6rem 0.8rem; font-size:0.6rem; line-height:1.6; color:var(--w70); }
 
   /* ── NEWS ── */
   #news-view { display:none; position:relative; z-index:5; padding:2rem 3rem 3rem; }
@@ -451,79 +458,141 @@ async function loadNews(){
 // https://www.notion.so/verygoodventures/Holidays-List-12745eb3279580548ae7d6681a0d7a55
 const RAW = [
   // ── JANUARY ──
-  {d:"2026-01-01",n:"New Year's Day",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-01-02",n:"Day After New Year",c:[{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-01-06",n:"Epiphany",c:[{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"}],note:"Germany: Bavaria only"},
-  {d:"2026-01-19",n:"Martin Luther King Jr. Day",c:[{f:"🇺🇸",n:"USA"}]},
-  {d:"2026-01-25",n:"Anniversary of the City of São Paulo",c:[{f:"🇧🇷",n:"Brazil"}],note:"São Paulo city"},
+  {d:"2026-01-01",n:"New Year's Day",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],
+    info:"The first day of the Gregorian calendar year, celebrated globally with fireworks, gatherings, and the tradition of making resolutions for the year ahead. Each country brings its own customs — from eating 12 grapes at midnight in Spain to watching the ball drop in New York."},
+  {d:"2026-01-02",n:"Day After New Year",c:[{f:"🇪🇨",n:"Ecuador"}],
+    info:"A public holiday in Ecuador giving people an extra day to recover and celebrate after New Year's festivities."},
+  {d:"2026-01-06",n:"Epiphany",c:[{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"}],note:"Germany: Bavaria only",
+    info:"Epiphany commemorates the visit of the Three Wise Men to the baby Jesus. In Spain it's called Día de Reyes and is when children traditionally receive gifts. Colorful parades (Cabalgata de Reyes) take place in cities the night before. In Germany it's especially observed in Bavaria."},
+  {d:"2026-01-19",n:"Martin Luther King Jr. Day",c:[{f:"🇺🇸",n:"USA"}],
+    info:"A federal holiday honoring the life and legacy of Dr. Martin Luther King Jr., the civil rights leader who championed equality and justice through nonviolent activism. Observed on the third Monday of January near his January 15 birthday. Many Americans volunteer in their communities on this day."},
+  {d:"2026-01-25",n:"Anniversary of the City of São Paulo",c:[{f:"🇧🇷",n:"Brazil"}],note:"São Paulo city",
+    info:"Founded by Jesuit priests on January 25, 1554, São Paulo celebrates its founding anniversary each year. The city — the largest in the Southern Hemisphere — marks the date with cultural events, concerts, and civic ceremonies throughout the metropolis."},
   // ── FEBRUARY ──
-  {d:"2026-02-02",n:"Constitution Day",c:[{f:"🇲🇽",n:"Mexico"}]},
-  {d:"2026-02-16",n:"Presidents' Day / Carnaval",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-02-17",n:"Carnaval (Day 2)",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-02-28",n:"Day of Andalusia",c:[{f:"🇪🇸",n:"Spain"}],note:"Andalusia"},
+  {d:"2026-02-02",n:"Constitution Day",c:[{f:"🇲🇽",n:"Mexico"}],
+    info:"Commemorates the promulgation of Mexico's Constitution of 1917, one of the most progressive constitutions of its time. It established fundamental social rights including land reform, labor rights, and limitations on the power of the Catholic Church. Observed on the first Monday of February."},
+  {d:"2026-02-16",n:"Presidents' Day / Carnaval",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"}],
+    info:"In the USA, Presidents' Day honors George Washington and all US presidents. In Brazil, Uruguay, and Ecuador it's the first day of Carnaval — the world-famous pre-Lenten festival featuring samba parades, elaborate costumes, street parties, and music that draws millions of visitors to Rio de Janeiro and other cities."},
+  {d:"2026-02-17",n:"Carnaval (Day 2)",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"}],
+    info:"The second day of Carnaval celebrations. Brazil's Carnaval is the largest in the world, with the famous Sambódromo parade in Rio de Janeiro showcasing samba schools competing with elaborate floats and thousands of dancers in spectacular costumes."},
+  {d:"2026-02-28",n:"Day of Andalusia",c:[{f:"🇪🇸",n:"Spain"}],note:"Andalusia",
+    info:"Celebrates the 1980 referendum in which Andalusians voted for autonomy, making Andalusia one of Spain's autonomous communities. The day is marked with flamenco performances, regional gastronomy, and cultural pride across the region including Seville, Málaga, Granada, and Jerez."},
   // ── MARCH ──
-  {d:"2026-03-16",n:"Benito Juárez Day",c:[{f:"🇲🇽",n:"Mexico"}]},
+  {d:"2026-03-16",n:"Benito Juárez Day",c:[{f:"🇲🇽",n:"Mexico"}],
+    info:"Honors Benito Juárez (1806–1872), Mexico's first indigenous president and a national hero who defended Mexican sovereignty against French intervention and implemented major liberal reforms. Observed on the third Monday of March near his March 21 birthday."},
   // ── APRIL ──
-  {d:"2026-04-02",n:"Good Thursday / Maundy Thursday",c:[{f:"🇺🇾",n:"Uruguay"},{f:"🇲🇽",n:"Mexico"},{f:"🇪🇸",n:"Spain"}],note:"Spain: Andalusia & Madrid only"},
-  {d:"2026-04-03",n:"Good Friday",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-04-06",n:"Easter Monday",c:[{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"},{f:"🇪🇸",n:"Spain"}],note:"Spain: Catalonia only"},
-  {d:"2026-04-21",n:"Tiradentes",c:[{f:"🇧🇷",n:"Brazil"}]},
+  {d:"2026-04-02",n:"Good Thursday / Maundy Thursday",c:[{f:"🇺🇾",n:"Uruguay"},{f:"🇲🇽",n:"Mexico"},{f:"🇪🇸",n:"Spain"}],note:"Spain: Andalusia & Madrid only",
+    info:"The Thursday before Easter commemorating the Last Supper of Jesus with his apostles. In Spain, solemn religious processions (procesiones) take place through city streets with brotherhoods carrying elaborate floats. Uruguay calls it 'Día de la Semana Criolla' and celebrates with gaucho traditions."},
+  {d:"2026-04-03",n:"Good Friday",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Good Friday marks the crucifixion of Jesus Christ. It is one of the most solemn days in the Christian calendar. In Spain, dramatic religious processions called 'pasos' are carried through the streets by brotherhoods. In many countries it is a public holiday with businesses and schools closed."},
+  {d:"2026-04-06",n:"Easter Monday",c:[{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"},{f:"🇪🇸",n:"Spain"}],note:"Spain: Catalonia only",
+    info:"The day after Easter Sunday, marking the end of Holy Week. In many European countries it's a public holiday. In Czech Republic there's a folk tradition where boys sprinkle girls with water or lightly tap them with decorated willow branches, symbolizing health and fertility for spring."},
+  {d:"2026-04-21",n:"Tiradentes",c:[{f:"🇧🇷",n:"Brazil"}],
+    info:"Honors Joaquim José da Silva Xavier, nicknamed 'Tiradentes' (tooth-puller), a martyr of the Brazilian independence movement executed in 1792. He led an early uprising against Portuguese colonial rule and is considered a national hero and symbol of Brazilian independence."},
   // ── MAY ──
-  {d:"2026-05-01",n:"Labour Day / Workers' Day",c:[{f:"🇺🇾",n:"Uruguay"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-05-02",n:"Madrid Community Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Community of Madrid"},
-  {d:"2026-05-04",n:"Early May Bank Holiday",c:[{f:"🇬🇧",n:"UK"}]},
-  {d:"2026-05-08",n:"Liberation Day",c:[{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-05-11",n:"Jerez Horse Fair",c:[{f:"🇪🇸",n:"Spain"}],note:"Jerez de la Frontera"},
-  {d:"2026-05-14",n:"Ascension Day",c:[{f:"🇩🇪",n:"Germany"}]},
-  {d:"2026-05-15",n:"San Isidro Labrador Day",c:[{f:"🇪🇸",n:"Spain"}],note:"City of Madrid"},
-  {d:"2026-05-25",n:"Memorial Day / Battle of Pichincha / Whit Monday / Spring Bank Holiday",c:[{f:"🇺🇸",n:"USA"},{f:"🇪🇨",n:"Ecuador"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"}]},
-  {d:"2026-05-29",n:"Our Lady of the Angels",c:[{f:"🇪🇸",n:"Spain"}],note:"Getafe"},
+  {d:"2026-05-01",n:"Labour Day / Workers' Day",c:[{f:"🇺🇾",n:"Uruguay"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇨🇿",n:"Czech Republic"}],
+    info:"International Workers' Day commemorates the 1886 Haymarket affair in Chicago, where workers rallied for an eight-hour workday. Celebrated globally with marches, rallies, and tributes to labor movements. In many countries it is one of the most widely observed public holidays of the year."},
+  {d:"2026-05-02",n:"Madrid Community Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Community of Madrid",
+    info:"Celebrates the 1808 uprising of the people of Madrid against Napoleon's occupation of Spain, famously depicted in Goya's paintings 'The Second of May 1808' and 'The Third of May 1808'. A regional holiday unique to the Community of Madrid."},
+  {d:"2026-05-04",n:"Early May Bank Holiday",c:[{f:"🇬🇧",n:"UK"}],
+    info:"The first Monday of May is a UK bank holiday, giving workers a long weekend at the start of spring. Originally linked to the ancient May Day celebrations, it is now a general public holiday with many outdoor events, fairs, and festivals."},
+  {d:"2026-05-08",n:"Liberation Day",c:[{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Commemorates the end of World War II and the liberation of Czechoslovakia from Nazi occupation on May 8, 1945. Ceremonies are held at memorials across the country, with the main events in Prague including wreath-laying at the National Memorial on Vítkov Hill."},
+  {d:"2026-05-11",n:"Jerez Horse Fair",c:[{f:"🇪🇸",n:"Spain"}],note:"Jerez de la Frontera",
+    info:"The Feria del Caballo in Jerez de la Frontera is one of Spain's most spectacular equestrian events. For a week, the city transforms with flamenco, sherry wine, elegant horse parades, and riders in traditional Andalusian dress. It's a unique showcase of Andalusian culture and heritage."},
+  {d:"2026-05-14",n:"Ascension Day",c:[{f:"🇩🇪",n:"Germany"}],
+    info:"Celebrated 40 days after Easter, Ascension Day marks the Christian belief in Jesus's ascension into heaven. In Germany it coincides with Father's Day (Vatertag), where men traditionally go on hikes or outings with wagons of beer and food — a uniquely German cultural tradition."},
+  {d:"2026-05-15",n:"San Isidro Labrador Day",c:[{f:"🇪🇸",n:"Spain"}],note:"City of Madrid",
+    info:"Madrid's patron saint festival honoring San Isidro, a 12th-century farmer known for his piety and miracles. The week-long celebrations include the famous San Isidro bullfighting season at Las Ventas, traditional verbenas (street fairs), concerts, and the chotis dance."},
+  {d:"2026-05-25",n:"Memorial Day / Battle of Pichincha / Whit Monday / Spring Bank Holiday",c:[{f:"🇺🇸",n:"USA"},{f:"🇪🇨",n:"Ecuador"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"}],
+    info:"In the USA, Memorial Day honors military personnel who died in service. In Ecuador, Battle of Pichincha Day (May 24) marks the 1822 battle that secured Ecuadorian independence. In Germany and UK it's Whit Monday / Spring Bank Holiday, a Christian holiday 50 days after Easter celebrating Pentecost."},
+  {d:"2026-05-29",n:"Our Lady of the Angels",c:[{f:"🇪🇸",n:"Spain"}],note:"Getafe",
+    info:"A local religious festival in Getafe honoring the city's patron saint, Our Lady of the Angels. Celebrated with a traditional pilgrimage, open-air mass, and local festivities unique to the Getafe community south of Madrid."},
   // ── JUNE ──
-  {d:"2026-06-04",n:"Corpus Christi",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇩🇪",n:"Germany"}]},
-  {d:"2026-06-11",n:"Saint Bernabé Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Marbella"},
-  {d:"2026-06-19",n:"Juneteenth",c:[{f:"🇺🇸",n:"USA"}]},
-  {d:"2026-06-24",n:"Saint John the Baptist Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Catalonia"},
+  {d:"2026-06-04",n:"Corpus Christi",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇩🇪",n:"Germany"}],
+    info:"A Catholic feast celebrating the Real Presence of Jesus Christ in the Eucharist. In Brazil and parts of Germany it is marked by elaborate street carpets made from colored sawdust, sand, and flowers, as well as processions through decorated streets."},
+  {d:"2026-06-11",n:"Saint Bernabé Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Marbella",
+    info:"Marbella's local patron saint day celebrating Saint Barnabas the Apostle. The city holds traditional religious processions, fireworks, and local festivities. It's one of the oldest celebrations in Marbella, dating back centuries."},
+  {d:"2026-06-19",n:"Juneteenth",c:[{f:"🇺🇸",n:"USA"}],
+    info:"Juneteenth (June 19th) commemorates June 19, 1865, when Union soldiers arrived in Galveston, Texas and announced the end of slavery — more than two months after the Civil War ended. It became a federal holiday in 2021 and is celebrated with community gatherings, music, food, and reflection on African American freedom and culture."},
+  {d:"2026-06-24",n:"Saint John the Baptist Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Catalonia",
+    info:"La Nit de Sant Joan (Night of Saint John) is one of Catalonia's biggest celebrations. On the eve of June 24, bonfires are lit across the region, fireworks fill the sky, and people celebrate through the night at beach parties and street gatherings. It marks the summer solstice and is deeply rooted in Catalan tradition."},
   // ── JULY ──
-  {d:"2026-07-03",n:"Independence Day (USA)",c:[{f:"🇺🇸",n:"USA"}]},
-  {d:"2026-07-05",n:"Saints Cyril & Methodius Day",c:[{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-07-06",n:"Jan Hus Day",c:[{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-07-09",n:"Constitutional Revolution Day",c:[{f:"🇧🇷",n:"Brazil"}],note:"São Paulo State"},
-  {d:"2026-07-20",n:"Constitution Day",c:[{f:"🇺🇾",n:"Uruguay"}]},
-  {d:"2026-07-25",n:"Santiago Apóstol Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Community of Madrid"},
+  {d:"2026-07-03",n:"Independence Day (USA)",c:[{f:"🇺🇸",n:"USA"}],
+    info:"The United States celebrates the adoption of the Declaration of Independence on July 4, 1776. In 2026, the 4th falls on a Saturday so the federal holiday is observed on Friday July 3rd. Celebrations include fireworks, parades, barbecues, and patriotic concerts across the country — with 2026 being the USA's 250th anniversary."},
+  {d:"2026-07-05",n:"Saints Cyril & Methodius Day",c:[{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Honors the 9th-century Byzantine missionaries who created the Glagolitic alphabet (predecessor to Cyrillic) and translated the Bible into Old Slavonic. They brought Christianity to Great Moravia. This is one of the most important national and religious holidays in Czech Republic."},
+  {d:"2026-07-06",n:"Jan Hus Day",c:[{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Commemorates Jan Hus, a 15th-century Czech theologian and church reformer who was burned at the stake in 1415 for heresy. Considered a national martyr and forerunner of the Protestant Reformation, his legacy is central to Czech national identity."},
+  {d:"2026-07-09",n:"Constitutional Revolution Day",c:[{f:"🇧🇷",n:"Brazil"}],note:"São Paulo State",
+    info:"Marks the 1932 Constitutionalist Revolution when São Paulo rose up against the federal government of Getúlio Vargas, demanding a new democratic constitution. Although the revolt was defeated, it led to Brazil's 1934 Constitution. It is observed only in São Paulo State as a symbol of regional pride."},
+  {d:"2026-07-20",n:"Constitution Day",c:[{f:"🇺🇾",n:"Uruguay"}],
+    info:"Uruguay's Constitution Day commemorates the first Uruguayan Constitution of 1830, which established the republic's democratic foundations. It is a national holiday celebrating the rule of law and democratic governance that has made Uruguay one of Latin America's most stable democracies."},
+  {d:"2026-07-25",n:"Santiago Apóstol Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Community of Madrid",
+    info:"The Feast of Saint James the Apostle, patron saint of Spain. While celebrated across the country — especially in Santiago de Compostela where pilgrims from the Camino de Santiago arrive — it is also a public holiday in the Community of Madrid."},
   // ── AUGUST ──
-  {d:"2026-08-10",n:"Independence Day",c:[{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-08-15",n:"Assumption of Mary",c:[{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"}],note:"Germany: Bavaria only"},
-  {d:"2026-08-25",n:"Independence Day",c:[{f:"🇺🇾",n:"Uruguay"}]},
-  {d:"2026-08-31",n:"Summer Bank Holiday",c:[{f:"🇬🇧",n:"UK"}],note:"England & Wales"},
+  {d:"2026-08-10",n:"Independence Day",c:[{f:"🇪🇨",n:"Ecuador"}],
+    info:"Celebrates Ecuador's first declaration of independence from Spain on August 10, 1809, known as the 'Primer Grito de Independencia' (First Cry of Independence). While full independence came in 1822, August 10 is observed as the national day with parades, civic events, and patriotic celebrations."},
+  {d:"2026-08-15",n:"Assumption of Mary",c:[{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"}],note:"Germany: Bavaria only",
+    info:"A major Catholic feast celebrating the belief that the Virgin Mary was taken body and soul into heaven. In Spain it coincides with the height of summer holidays. In Bavaria it is a public holiday with religious processions and church ceremonies."},
+  {d:"2026-08-25",n:"Independence Day",c:[{f:"🇺🇾",n:"Uruguay"}],
+    info:"Uruguay's Declaration of Independence was signed on August 25, 1825, when the country declared independence from Brazil and reunification with the United Provinces of the Río de la Plata. The day is marked with military parades, civic ceremonies, and national pride events throughout the country."},
+  {d:"2026-08-31",n:"Summer Bank Holiday",c:[{f:"🇬🇧",n:"UK"}],note:"England & Wales",
+    info:"The last Monday of August marks the final bank holiday of the British summer, giving workers a long weekend to enjoy the tail end of the warm season. Many people take short trips, attend outdoor festivals, or visit seaside resorts for one last summer getaway."},
   // ── SEPTEMBER ──
-  {d:"2026-09-07",n:"Brazil Independence Day / USA Labor Day",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇺🇸",n:"USA"}]},
-  {d:"2026-09-11",n:"National Holiday of Catalonia",c:[{f:"🇪🇸",n:"Spain"}],note:"Catalonia"},
-  {d:"2026-09-16",n:"Independence Day",c:[{f:"🇲🇽",n:"Mexico"}]},
-  {d:"2026-09-24",n:"Virgin of Mercy",c:[{f:"🇪🇸",n:"Spain"}],note:"Barcelona, Jerez de la Frontera"},
-  {d:"2026-09-28",n:"Statehood Day",c:[{f:"🇨🇿",n:"Czech Republic"}]},
+  {d:"2026-09-07",n:"Brazil Independence Day / USA Labor Day",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇺🇸",n:"USA"}],
+    info:"In Brazil, September 7 marks the 1822 declaration of independence from Portugal by Prince Dom Pedro I on the banks of the Ipiranga River — known as the 'Grito do Ipiranga'. In the USA, Labor Day is a federal holiday on the first Monday of September honoring the labor movement."},
+  {d:"2026-09-11",n:"National Holiday of Catalonia",c:[{f:"🇪🇸",n:"Spain"}],note:"Catalonia",
+    info:"La Diada Nacional de Catalunya commemorates the fall of Barcelona on September 11, 1714 during the War of Spanish Succession. Rather than a victory celebration, it's a day of remembrance and Catalan cultural identity. Large demonstrations and cultural events take place across the region."},
+  {d:"2026-09-16",n:"Independence Day",c:[{f:"🇲🇽",n:"Mexico"}],
+    info:"Mexico's most important national holiday, commemorating the start of the War of Independence on September 16, 1810, when priest Miguel Hidalgo rang his church bell and delivered the 'Grito de Independencia' in Dolores. The night before, the President reenacts the Grito from the National Palace balcony to massive crowds."},
+  {d:"2026-09-24",n:"Virgin of Mercy",c:[{f:"🇪🇸",n:"Spain"}],note:"Barcelona, Jerez de la Frontera",
+    info:"La Mercè is Barcelona's biggest annual festival, celebrating the city's co-patron saint. For five days the city fills with free concerts, human tower competitions (castellers), fire runs (correfocs), and street performances. It's considered one of Europe's finest urban festivals."},
+  {d:"2026-09-28",n:"Statehood Day",c:[{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Celebrates the feast day of Saint Wenceslas (Václav), the patron saint of Bohemia and Czech lands, who was murdered in 935 AD. He is the central figure of Czech national identity — referenced in the Christmas carol 'Good King Wenceslas' — and his statue on Wenceslas Square in Prague is a national symbol."},
   // ── OCTOBER ──
-  {d:"2026-10-03",n:"German Unity Day",c:[{f:"🇩🇪",n:"Germany"}]},
-  {d:"2026-10-09",n:"Independence of Guayaquil",c:[{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-10-12",n:"Lady of Aparecida / National Day of Spain",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇪🇸",n:"Spain"}]},
-  {d:"2026-10-19",n:"San Pedro de Alcántara",c:[{f:"🇪🇸",n:"Spain"}],note:"Marbella"},
-  {d:"2026-10-28",n:"Independence Day",c:[{f:"🇨🇿",n:"Czech Republic"}]},
+  {d:"2026-10-03",n:"German Unity Day",c:[{f:"🇩🇪",n:"Germany"}],
+    info:"Germany's national day celebrates the reunification of East and West Germany on October 3, 1990, after 45 years of division following WWII. The Berlin Wall had fallen on November 9, 1989. Celebrations are held across the country with the main ceremony rotating between German states each year."},
+  {d:"2026-10-09",n:"Independence of Guayaquil",c:[{f:"🇪🇨",n:"Ecuador"}],
+    info:"Marks the independence of Guayaquil from Spanish colonial rule on October 9, 1820 — two years before Ecuador's full independence. As Ecuador's largest city and main port, Guayaquil holds major patriotic parades, cultural events, and festivities commemorating the city's key role in the independence movement."},
+  {d:"2026-10-12",n:"Lady of Aparecida / National Day of Spain",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇪🇸",n:"Spain"}],
+    info:"In Brazil, Our Lady of Aparecida is the country's patron saint — a small Black Madonna statue found by fishermen in 1717. The Basilica of Aparecida is one of the largest Catholic churches in the world and receives millions of pilgrims. In Spain, it's the Día de la Hispanidad, the national day celebrating Spanish heritage."},
+  {d:"2026-10-19",n:"San Pedro de Alcántara",c:[{f:"🇪🇸",n:"Spain"}],note:"Marbella",
+    info:"Marbella celebrates its secondary patron saint, San Pedro de Alcántara, a 16th-century Franciscan friar. The district of San Pedro de Alcántara within Marbella municipality holds its own local festivities with processions, music, and traditional celebrations."},
+  {d:"2026-10-28",n:"Independence Day",c:[{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Celebrates the founding of Czechoslovakia on October 28, 1918, when the country declared independence from the Austro-Hungarian Empire at the end of World War I. It is one of the most important national holidays in Czech Republic, with state ceremonies and cultural events in Prague and across the country."},
   // ── NOVEMBER ──
-  {d:"2026-11-01",n:"All Saints' Day",c:[{f:"🇩🇪",n:"Germany"},{f:"🇪🇸",n:"Spain"}],note:"Spain: Andalusia & Madrid"},
-  {d:"2026-11-02",n:"All Souls' Day",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-11-03",n:"Independence of Cuenca",c:[{f:"🇪🇨",n:"Ecuador"}]},
-  {d:"2026-11-09",n:"Día de la Almudena",c:[{f:"🇪🇸",n:"Spain"}],note:"City of Madrid"},
-  {d:"2026-11-11",n:"Veterans Day",c:[{f:"🇺🇸",n:"USA"}]},
-  {d:"2026-11-15",n:"Republic Day",c:[{f:"🇧🇷",n:"Brazil"}]},
-  {d:"2026-11-17",n:"Revolution Day / Freedom & Democracy Day",c:[{f:"🇲🇽",n:"Mexico"},{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-11-20",n:"Black Awareness Day",c:[{f:"🇧🇷",n:"Brazil"}]},
-  {d:"2026-11-26",n:"Thanksgiving",c:[{f:"🇺🇸",n:"USA"}],dateEnd:"2026-11-27"},
+  {d:"2026-11-01",n:"All Saints' Day",c:[{f:"🇩🇪",n:"Germany"},{f:"🇪🇸",n:"Spain"}],note:"Spain: Andalusia & Madrid",
+    info:"A Christian feast day honoring all saints. In Spain and Germany families visit cemeteries to place flowers on the graves of loved ones. In Spain it is also associated with the theatrical tradition of 'Don Juan Tenorio' performed in theaters across the country. The evening before (Halloween) has become increasingly popular too."},
+  {d:"2026-11-02",n:"All Souls' Day",c:[{f:"🇧🇷",n:"Brazil"},{f:"🇪🇨",n:"Ecuador"}],
+    info:"The Day of the Dead (Finados) is observed throughout Brazil and Ecuador with visits to cemeteries to honor deceased relatives. In Ecuador it blends with indigenous traditions — families bring food and flowers to graves and some communities hold all-night vigils."},
+  {d:"2026-11-03",n:"Independence of Cuenca",c:[{f:"🇪🇨",n:"Ecuador"}],
+    info:"Celebrates the independence of Cuenca — Ecuador's third largest city and a UNESCO World Heritage Site — from Spanish rule on November 3, 1820. The city is known for its stunning colonial architecture, Panama hat industry, and vibrant cultural scene. Independence day parades and celebrations fill the historic center."},
+  {d:"2026-11-09",n:"Día de la Almudena",c:[{f:"🇪🇸",n:"Spain"}],note:"City of Madrid",
+    info:"Madrid's patron saint day honoring Our Lady of the Almudena. According to legend, when Alfonso VI reconquered Madrid in 1083 an image of the Virgin was found hidden in the old city walls (almudena means 'citadel' in Arabic). The Almudena Cathedral next to the Royal Palace is her dedicated basilica."},
+  {d:"2026-11-11",n:"Veterans Day",c:[{f:"🇺🇸",n:"USA"}],
+    info:"Originally Armistice Day, marking the end of World War I at the 11th hour of the 11th day of the 11th month, 1918. In the USA it honors all military veterans who have served the country. Ceremonies are held at the Tomb of the Unknown Soldier at Arlington National Cemetery and at memorials across the country."},
+  {d:"2026-11-15",n:"Republic Day",c:[{f:"🇧🇷",n:"Brazil"}],
+    info:"Commemorates the proclamation of the Brazilian Republic on November 15, 1889, when a military coup ended the monarchy of Emperor Dom Pedro II. Brazil went from an empire to a federal republic overnight. The day is marked with civic ceremonies and military parades, particularly in Brasília."},
+  {d:"2026-11-17",n:"Revolution Day / Freedom & Democracy Day",c:[{f:"🇲🇽",n:"Mexico"},{f:"🇨🇿",n:"Czech Republic"}],
+    info:"In Mexico, Revolution Day honors the start of the Mexican Revolution on November 20, 1910, against the dictatorship of Porfirio Díaz. In Czech Republic, November 17 marks the 1989 Velvet Revolution, when peaceful student protests led to the fall of communist rule — one of history's most remarkable nonviolent transitions."},
+  {d:"2026-11-20",n:"Black Awareness Day",c:[{f:"🇧🇷",n:"Brazil"}],
+    info:"Dia da Consciência Negra honors Zumbi dos Palmares, the last leader of Quilombo dos Palmares — a free settlement of escaped enslaved people — who was killed on November 20, 1695. The day celebrates Afro-Brazilian culture, history, and the ongoing struggle against racism in Brazil."},
+  {d:"2026-11-26",n:"Thanksgiving",c:[{f:"🇺🇸",n:"USA"}],dateEnd:"2026-11-27",
+    info:"An American harvest festival with roots in the 1621 feast shared between Pilgrim settlers and the Wampanoag people. Today it is a time for families to gather, give thanks, and share a large meal traditionally featuring turkey, stuffing, cranberry sauce, and pumpkin pie. The Friday after Thanksgiving (Black Friday) marks the start of the holiday shopping season."},
   // ── DECEMBER ──
-  {d:"2026-12-07",n:"Constitution Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Andalusia & Madrid"},
-  {d:"2026-12-08",n:"Immaculate Conception",c:[{f:"🇪🇸",n:"Spain"}]},
-  {d:"2026-12-24",n:"Christmas Eve",c:[{f:"🇺🇸",n:"USA"},{f:"🇺🇾",n:"Uruguay"},{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-12-25",n:"Christmas Day",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}]},
-  {d:"2026-12-26",n:"St. Stephen's Day / Boxing Day",c:[{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],note:"Spain: Catalonia only"},
-  {d:"2026-12-28",n:"🎄 EOY Refresh Break",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],dateEnd:"2026-12-31"},
+  {d:"2026-12-07",n:"Constitution Day",c:[{f:"🇪🇸",n:"Spain"}],note:"Andalusia & Madrid",
+    info:"Spain's Constitution Day commemorates the approval of the 1978 Spanish Constitution by referendum, which marked the transition to democracy after 40 years of Franco's dictatorship. It is an especially significant holiday in Andalusia and Madrid where regional assemblies hold special sessions."},
+  {d:"2026-12-08",n:"Immaculate Conception",c:[{f:"🇪🇸",n:"Spain"}],
+    info:"A Catholic feast celebrating the belief that the Virgin Mary was conceived without original sin. In Spain it is a national holiday — one of the most important Marian feast days. Seville holds one of the most famous celebrations at the Cathedral, while across Spain religious processions and masses are held."},
+  {d:"2026-12-24",n:"Christmas Eve",c:[{f:"🇺🇸",n:"USA"},{f:"🇺🇾",n:"Uruguay"},{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Christmas Eve is when many cultures hold their main Christmas celebration. In Czech Republic, families gather for a traditional carp dinner and gift-giving at midnight. In Uruguay and much of Latin America, Nochebuena (Christmas Eve) is the primary celebration with family dinners and fireworks at midnight."},
+  {d:"2026-12-25",n:"Christmas Day",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],
+    info:"Christmas Day celebrates the birth of Jesus Christ and is one of the most widely observed holidays in the world. Traditions vary by country: Germans celebrate with Christmas markets and Stollen cake; Brazilians with Papai Noel and summer heat; Brits with crackers and pudding; Americans with gift-giving and family gatherings."},
+  {d:"2026-12-26",n:"St. Stephen's Day / Boxing Day",c:[{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],note:"Spain: Catalonia only",
+    info:"In the UK, Boxing Day has its origins in the tradition of giving boxes of gifts to servants and the poor. Today it's associated with shopping sales and sports. In Germany and Czech Republic it's the Feast of St. Stephen. In Catalonia it's the second day of Christmas (Sant Esteve) celebrated with family."},
+  {d:"2026-12-28",n:"🎄 EOY Refresh Break",c:[{f:"🇺🇸",n:"USA"},{f:"🇧🇷",n:"Brazil"},{f:"🇲🇽",n:"Mexico"},{f:"🇺🇾",n:"Uruguay"},{f:"🇪🇨",n:"Ecuador"},{f:"🇪🇸",n:"Spain"},{f:"🇩🇪",n:"Germany"},{f:"🇬🇧",n:"UK"},{f:"🇨🇿",n:"Czech Republic"}],dateEnd:"2026-12-31",
+    info:"VGV's End of Year Refresh Break — a company-wide shutdown to close out the year. The whole team disconnects to rest, recharge, and spend time with family and friends before the new year begins. 🦄✨"},
 ];
 
 const COUNTRY_REGION = {USA:'usa',Brazil:'latam',Mexico:'latam',Uruguay:'latam',Ecuador:'latam',Spain:'europe',Germany:'europe',UK:'europe','Czech Republic':'europe'};
@@ -554,6 +623,13 @@ function getHolidays(){
     })).filter(h=>h.c.length>0);
   }
   return list;
+}
+
+function toggleHolInfo(btn, id){
+  const body = document.getElementById(id);
+  if(!body) return;
+  const open = body.classList.toggle('open');
+  btn.classList.toggle('open', open);
 }
 
 function renderHolidays(){
@@ -614,12 +690,24 @@ function renderHolidays(){
       let cls=td?'is-today':soon?'is-soon':past?'is-past':'';
       let badge=td?`<span class="tl-badge today">TODAY</span>`:soon?`<span class="tl-badge soon">SOON</span>`:'';
       const endStr=h.dateEnd?` – ${parseD(h.dateEnd).getDate()} ${MONTHS_SHORT[parseD(h.dateEnd).getMonth()]}` : '';
+      const uid = h.d.replace(/-/g,'')+'_'+h.n.replace(/[^a-zA-Z0-9]/g,'').slice(0,8);
+      const toggleHtml = h.info ? `
+        <div class="tl-toggle">
+          <button class="tl-toggle-btn" onclick="toggleHolInfo(this,'tb_${uid}')">
+            <span class="tl-arrow">▶</span> About this holiday
+          </button>
+          <div class="tl-toggle-body" id="tb_${uid}">
+            
+            <div class="tl-toggle-desc">${h.info}</div>
+          </div>
+        </div>` : '';
       tlHtml+=`<div class="timeline-row ${cls}">
         <div class="tl-date"><div class="tl-day">${d.getDate()}</div><div class="tl-dow">${DAYS[d.getDay()]}</div></div>
         <div class="tl-body">
           <div class="tl-name">${h.n}${endStr?`<span style="font-size:0.55rem;color:var(--w40);font-weight:400"> ${endStr}</span>`:''}</div>
           <div class="tl-countries">${h.c.map(x=>`<span class="tl-chip">${x.f} ${x.n}</span>`).join('')}</div>
           ${h.note?`<div class="tl-note">📍 ${h.note}</div>`:''}
+          ${toggleHtml}
         </div>
         ${badge}
       </div>`;
